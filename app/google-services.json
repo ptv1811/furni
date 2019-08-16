@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "14040846843",
+    "firebase_url": "https://furni-785a2.firebaseio.com",
+    "project_id": "furni-785a2",
+    "storage_bucket": "furni-785a2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:14040846843:android:5ecfc48de1e14b57",
+        "android_client_info": {
+          "package_name": "com.example.furni"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "14040846843-o9siqpfgp0uq8pqcbsagf9834u510k4g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.furni",
+            "certificate_hash": "c97b31b174a20a7809b4eed1b56fc1cb147b0682"
+          }
+        },
+        {
+          "client_id": "14040846843-sjnijolo3jobf4b5qne5321ss010064c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXeqmsEkXLl4uSPDiEAVmpBXWfUXLbgtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "14040846843-sjnijolo3jobf4b5qne5321ss010064c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
