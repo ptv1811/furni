@@ -103,7 +103,7 @@ public class ProductDetail extends AppCompatActivity {
 
                 //Model_SFB=dataSnapshot.child("Sfb").getValue().toString();
 
-                Model_SFB="https://srv-file6.gofile.io/download/t9sJzK/pod.sfb";
+                Model_SFB="https://github.com/ptv1811/furni/blob/master/app/sample/pod.sfb";
                 String tag="hi";
                 Log.i(tag,"HMM: "+Model_SFB);
 
