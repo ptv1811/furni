@@ -98,8 +98,6 @@
                     android:layout_marginBottom="108dp"
                     android:visibility="visible"
                     app:backGroundColor="#000"
-                    app:finalNumber="10"
-                    app:initialNumber="0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/price_product"
                     app:textColor="#fff"
@@ -112,7 +110,7 @@
                     android:layout_width="149dp"
                     android:layout_height="69dp"
                     android:layout_marginStart="23dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="49dp"
                     android:layout_marginEnd="32dp"
                     android:gravity="center"
                     android:text="Price"
@@ -167,7 +165,7 @@
             android:layout_width="match_parent"
             android:id="@+id/ar_fragment"
             android:name="com.google.ar.sceneform.ux.ArFragment"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             />
 
 

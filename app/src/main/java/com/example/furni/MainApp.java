@@ -3,6 +3,7 @@ package com.example.furni;
 import android.os.Bundle;
 
 import com.example.furni.Fragment.AboutUsFragment;
+import com.example.furni.Fragment.CartFragment;
 import com.example.furni.Fragment.ShopFragment;
 import com.example.furni.Fragment.StoreFragment;
 
@@ -131,7 +132,8 @@ public class MainApp extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new StoreFragment()).commit();
                 break;
             case R.id.nav_cart:
-
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new CartFragment()).commit();
+                break;
             case R.id.nav_sign_out:
                 Toast.makeText(this, "Sign out pressed", Toast.LENGTH_SHORT).show();
         }
