@@ -1,11 +1,11 @@
 package com.example.furni.Model;
 
 public class Order {
-    String ProductId;
-    String ProductName;
-    String ProductAmount;
-    String ProductPrice;
-    String ProductImage;
+    private String ProductId;
+    private String ProductName;
+    private String ProductAmount;
+    private String ProductPrice;
+    private String ProductImage;
 
     public String getProductImage() {
         return ProductImage;

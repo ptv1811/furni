@@ -5,6 +5,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.os.AsyncTask;
@@ -37,6 +39,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductDetail extends AppCompatActivity {
 
     TextView name_product, product_description, price_product;
@@ -44,18 +49,25 @@ public class ProductDetail extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton add_to_cart;
     ElegantNumberButton amount;
+    String UID;
 
     String productID;
     String Model_SFB;
     int Quantity;
-    int order_amount;
+    int order_amount=0;
     Order order;
     long maxid;
+    int orderid=0;
+
+    List<Order> result= new ArrayList<>();
+
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference product;
     private DatabaseReference myRef;
     ArFragment arFragment;
+
+    private ArrayList<Order> listOrder=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +94,9 @@ public class ProductDetail extends AppCompatActivity {
 
         if (getIntent() != null) {
             productID = getIntent().getStringExtra("ProductId");
+            UID=getIntent().getStringExtra("UserId");
+            String TAG="CC";
+            Log.i(TAG,"UID: "+UID);
         }
         if (!productID.isEmpty()) {
             getProductDetail(productID);
@@ -113,67 +128,28 @@ public class ProductDetail extends AppCompatActivity {
 
                 Log.i(tag,"amount "+amount.getNumber());
 
-                amount.setOnClickListener(new ElegantNumberButton.OnClickListener() {
+                add_to_cart.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        //order_amount=Integer.parseInt(amount.getNumber());
-                        Log.i(tag,"amount "+order_amount);
-                        Log.i(tag,"name" +p.getName());
-                        add_to_cart.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                myRef.child("Users/").child("Orders/").addValueEventListener(new ValueEventListener() {
-
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.exists()){
-                                            Order o=dataSnapshot.getValue(Order.class);
-                                            order=new Order(productID,p.getName(),amount.getNumber(),p.getPrice(),p.getImage());
-                                            maxid=dataSnapshot.getChildrenCount();
-                                            if (o==null){
-                                                myRef.child(String.valueOf(maxid+1)).setValue(order);
-                                            }
-                                            else {
-                                                order=o;
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
-
-                        });
-
+                    public void onClick(View v) {
+                        order=new Order(productID,p.getName(),amount.getNumber(),p.getPrice(),p.getImage());
+                        myRef.child("Users/").child(UID+"/").child("orders/").child(String.valueOf(System.currentTimeMillis()))
+                                .setValue(order);
                         Toast.makeText(ProductDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
+
                     }
                 });
-
-                //order_amount=Integer.parseInt(amount.getNumber());
-
-
-
+                Log.i(tag,"amount: "+ order_amount);
 
                 arFragment=(ArFragment)getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
-
-
-
                 arFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
                     placeModel(hitResult.createAnchor(),Model_SFB);
                 });
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
-
     }
 
     private void placeModel(Anchor anchor, String model_sfb) {

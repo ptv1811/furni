@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.furni.Model.User;
@@ -25,6 +26,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import android.view.Menu;
 import android.widget.Toast;
@@ -120,10 +122,20 @@ public class MainApp extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        final String userID=getIntent().getStringExtra("UserID");
+        final String email=getIntent().getStringExtra("nusername");
+        final String password=getIntent().getStringExtra("npassword");
+        String tag="Hello";
+        Log.i(tag,email);
+        Bundle bundle=new Bundle();
+        bundle.putString("UID",userID);
 
         switch(id){
             case R.id.nav_shop:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new ShopFragment()).commit();
+                Log.i(tag,"BUNDLE" + bundle);
+                ShopFragment shopFragment=new ShopFragment();
+                shopFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,shopFragment).commit();
                 break;
             case R.id.nav_about_us:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new AboutUsFragment()).commit();
@@ -132,7 +144,9 @@ public class MainApp extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new StoreFragment()).commit();
                 break;
             case R.id.nav_cart:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new CartFragment()).commit();
+                CartFragment cartFragment=new CartFragment();
+                cartFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,cartFragment).commit();
                 break;
             case R.id.nav_sign_out:
                 Toast.makeText(this, "Sign out pressed", Toast.LENGTH_SHORT).show();

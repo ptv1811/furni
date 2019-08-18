@@ -2,6 +2,7 @@ package com.example.furni.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,11 @@ public class ShopFragment extends Fragment {
     private DatabaseReference myRef;
     RecyclerView recyclerView;
 
+
+
+    String UID;
+
+
     private FirebaseRecyclerOptions<Product> options;
     private FirebaseRecyclerAdapter<Product, RecyclerviewAdapter> adapter;
 
@@ -43,12 +49,14 @@ public class ShopFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("Product");
 
-
+        Bundle bundle=this.getArguments();
+        if (bundle!=null){
+            UID= bundle.getString("UID");
+        }
         View RootView= inflater.inflate(R.layout.fragment_shop_all,container,false);
         recyclerView=RootView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
      //   layoutManager = new LinearLayoutManager(this.getActivity());
-
       //  recyclerView.setLayoutManager(layoutManager);
 
         loadProduct();
@@ -92,8 +100,11 @@ public class ShopFragment extends Fragment {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
                         Intent detail_intent= new Intent(getActivity(), ProductDetail.class);
+                        String TAG="UID";
+                        Log.i(TAG,"OLALA"+ UID);
+                        detail_intent.putExtra("UserId",UID);
                         detail_intent.putExtra("ProductId",adapter.getRef(i).getKey());
-                        startActivity(detail_intent);
+                        startActivityForResult(detail_intent,1);
                     }
                 });
             }
