@@ -1,5 +1,13 @@
 package com.example.furni.Fragment;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,25 +19,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.furni.CartAdapter;
 import com.example.furni.Model.Cart;
-import com.example.furni.Model.Order;
 import com.example.furni.R;
-import com.example.furni.RecyclerviewAdapter;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CartFragment extends Fragment {
 
@@ -42,7 +45,10 @@ public class CartFragment extends Fragment {
     private DatabaseReference request;
     DatabaseReference myRef;
 
+    String CHANNEL_ID="Channel 1";
+
     String UID;
+    int totalprice=0;
 
     private FirebaseRecyclerOptions<Cart> option;
     private FirebaseRecyclerAdapter<Cart, CartAdapter> adapter;
@@ -69,10 +75,14 @@ public class CartFragment extends Fragment {
 
         recyclerView=RootView.findViewById(R.id.cart_recycler);
         recyclerView.setHasFixedSize(true);
+
         loadListProduct();
 
-        layoutManager=new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),1);
+        //layoutManager=new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(gridLayoutManager);
+
 
         adapter.startListening();
         recyclerView.setAdapter(adapter);
@@ -104,24 +114,56 @@ public class CartFragment extends Fragment {
                 //Log.i(tag,"quantity: "+quantity);
 
                 cartAdapter.name_of_product.setText(cart.getProductName());
-                cartAdapter.amount_of_product.setText(cart.getProductAmount());
-                cartAdapter.price_of_product.setText(cart.getProductPrice());
+                cartAdapter.amount_of_product.setText("Amount: "+cart.getProductAmount());
+                cartAdapter.price_of_product.setText("$ "+ cart.getProductPrice());
 
-             /*   int totalprice=0, price,amount;
-                amount=Integer.parseInt(cart.getProductAmout());
+                int price,amount;
+                amount=Integer.parseInt(cart.getProductAmount());
                 price=Integer.parseInt(cart.getProductPrice());
                 totalprice+=amount*price;
+                Log.i(tag,"productid " + cart.getProductId());
+                request=request.child("Product/").child(cart.getOrderID()+"/");
 
-                totalPrice.setText(String.valueOf(totalprice));*/
+                int am=Integer.parseInt(cart.getProductAmount());
 
+                totalPrice.setText("$"+String.valueOf(totalprice));
 
                 confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                            NotificationChannel channel1=new NotificationChannel(CHANNEL_ID,"Channel1",NotificationManager.IMPORTANCE_HIGH);
+                            channel1.setDescription("Hello");
+                            NotificationManager manager=getContext().getSystemService(NotificationManager.class);
+                            manager.createNotificationChannel(channel1);
+                        }
+
+                        NotificationCompat.Builder builder= new NotificationCompat.Builder(getContext(),CHANNEL_ID);
+                        Intent myIntent=new Intent(getContext(), CartFragment.class);
+                        PendingIntent pendingIntent= PendingIntent.getActivity(getContext(),0,myIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+                        builder.setAutoCancel(true)
+                                .setDefaults(Notification.DEFAULT_ALL)
+                                .setChannelId(CHANNEL_ID)
+                                .setWhen(System.currentTimeMillis())
+                                .setSmallIcon(R.mipmap.ic_launcher_round)
+                                .setContentTitle("Thank you for shopping with us")
+                                .setContentIntent(pendingIntent)
+                                .setContentText("Your order has been confirmed")
+                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
+                                .setContentInfo("Info");
+
+                        NotificationManager notificationManager= (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                        notificationManager.notify(1,builder.build());
+                        recyclerView.setVisibility(View.GONE);
+
+                        totalPrice.setText("$ 0");
+                        myRef.removeValue();
+
+
                     }
                 });
-
             }
 
             @NonNull
@@ -134,8 +176,6 @@ public class CartFragment extends Fragment {
         };
 
 }
-
-
     @Override
     public void onStart() {
         super.onStart();

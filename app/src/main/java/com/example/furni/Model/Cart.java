@@ -3,16 +3,16 @@ package com.example.furni.Model;
 public class Cart {
     private String orderID;
     private String productAmount;
-    private String productID,productImage,productName,productPrice;
+    private String productId,productImage,productName,productPrice;
 
     public Cart(){
 
     }
 
-    public Cart(String orderID, String productAmount, String productID, String productImage, String productName, String productPrice) {
+    public Cart(String orderID, String productAmount, String productId, String productImage, String productName, String productPrice) {
         this.orderID = orderID;
         this.productAmount = productAmount;
-        this.productID = productID;
+        this.productId = productId;
         this.productImage = productImage;
         this.productName = productName;
         this.productPrice = productPrice;
@@ -34,12 +34,12 @@ public class Cart {
         this.productAmount = productAmout;
     }
 
-    public String getProductID() {
-        return productID;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProductID(String productID) {
-        this.productID = productID;
+    public void setProductId(String productID) {
+        this.productId = productID;
     }
 
     public String getProductImage() {

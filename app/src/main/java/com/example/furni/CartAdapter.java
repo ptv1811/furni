@@ -38,8 +38,6 @@ public class CartAdapter extends RecyclerView.ViewHolder implements View.OnClick
         amount_of_product=itemView.findViewById(R.id.amount_of_product);
         imageView=itemView.findViewById(R.id.imageView3);
 
-        itemView.setOnClickListener(this);
-
     }
 
     @Override
