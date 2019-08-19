@@ -49,6 +49,7 @@ public class ProductDetail extends AppCompatActivity {
     ElegantNumberButton amount;
     String UID;
     ImageView back;
+    int range;
 
     String productID;
     String Model_SFB;
@@ -81,7 +82,7 @@ public class ProductDetail extends AppCompatActivity {
         myRef=firebaseDatabase.getReference();
 
 
-        collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapseAppBar);
+        //collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapseAppBar);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
@@ -117,28 +118,32 @@ public class ProductDetail extends AppCompatActivity {
                 product_description.setText(p.getDescription());
 
                 Model_SFB=dataSnapshot.child("Sfb").getValue().toString();
-                //Model_SFB="https://firebasestorage.googleapis.com/v0/b/furni-785a2.appspot.com/o/3Dmodel%2FTV%2Ftv.glb?alt=media&token=1a459bd3-e20a-4c70-b7cd-6c3d3b085bee";
                 String tag="hi";
+                Log.i(tag,"productid: "+productID);
 
                 Log.i(tag,"hello there" + p.getName());
                 Log.i(tag,"HMM: "+Model_SFB);
                 Quantity=Integer.parseInt(dataSnapshot.child("Quantity").getValue().toString());
                 Log.i(tag,"quantity: "+Quantity);
                 amount.setRange(1,Quantity);
-
                 Log.i(tag,"amount "+amount.getNumber());
 
-                add_to_cart.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        order=new Order(productID,p.getName(),amount.getNumber(),p.getPrice(),p.getImage());
-                        myRef.child("Users/").child(UID+"/").child("orders/").child(String.valueOf(System.currentTimeMillis()))
-                                .setValue(order);
-                        Toast.makeText(ProductDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
 
+                amount.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
+                    @Override
+                    public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+                        add_to_cart.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                order=new Order(productID,p.getName(),amount.getNumber(),p.getPrice(),p.getImage());
+                                myRef.child("Users/").child(UID+"/").child("orders/").child(String.valueOf(System.currentTimeMillis()))
+                                        .setValue(order);
+                                Toast.makeText(ProductDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
-                Log.i(tag,"amount: "+ order_amount);
+
 
                 arFragment=(ArFragment)getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 

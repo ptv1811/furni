@@ -32,12 +32,7 @@ public class ShopFragment extends Fragment {
     private FirebaseDatabase database;
     private DatabaseReference myRef;
     RecyclerView recyclerView;
-
-
-
     String UID;
-
-
     private FirebaseRecyclerOptions<Product> options;
     private FirebaseRecyclerAdapter<Product, RecyclerviewAdapter> adapter;
 
