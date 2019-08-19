@@ -51,6 +51,7 @@
                     android:layout_width="239dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="23dp"
+                    android:fontFamily="@font/avo2"
                     android:gravity="center_vertical"
                     android:text="put product name"
                     android:textColor="#000"
@@ -98,6 +99,7 @@
                     android:layout_marginBottom="108dp"
                     android:visibility="visible"
                     app:backGroundColor="#000"
+                    app:initialNumber="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/price_product"
                     app:textColor="#fff"
@@ -144,6 +146,11 @@
 
           </Toolbar>
 
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="46dp"
+                android:layout_height="41dp"
+                app:srcCompat="@drawable/swipe4" />
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

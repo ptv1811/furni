@@ -1,5 +1,6 @@
 package com.example.furni;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.furni.Fragment.AboutUsFragment;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.furni.Model.Shop;
 import com.example.furni.Model.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +40,8 @@ public class MainApp extends AppCompatActivity
     private FirebaseDatabase mDB;
     private DatabaseReference myRef;
 
+    Shop shop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +64,7 @@ public class MainApp extends AppCompatActivity
 
 
 
-
-     /*     mDB=FirebaseDatabase.getInstance();
+        mDB=FirebaseDatabase.getInstance();
         myRef=mDB.getReference();
 
         final String userID=getIntent().getStringExtra("UserID");
@@ -72,16 +75,20 @@ public class MainApp extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user= dataSnapshot.getValue(User.class);
-                    nuser=new User(email,userID,password);
-                    myRef.child("Users/").child(userID+"/").setValue(nuser);
 
+                if (user==null) {
+                    nuser = new User(email, password);
+                    myRef.child("Users/").child(userID + "/").setValue(nuser);
+                }
+                else
+                    nuser=user;
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
             }
-        });*/
+        });
 
     }
 
@@ -121,6 +128,11 @@ public class MainApp extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        mDB=FirebaseDatabase.getInstance();
+        myRef=mDB.getReference("Shop");
+
+
+
         int id = item.getItemId();
         final String userID=getIntent().getStringExtra("UserID");
         final String email=getIntent().getStringExtra("nusername");
@@ -129,6 +141,20 @@ public class MainApp extends AppCompatActivity
         Log.i(tag,email);
         Bundle bundle=new Bundle();
         bundle.putString("UID",userID);
+        //bundle.putString("Address",shop.getAddress());
+        //bundle.putString("Phone",shop.getPhone());
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                shop=dataSnapshot.getValue(Shop.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         switch(id){
             case R.id.nav_shop:
@@ -141,7 +167,9 @@ public class MainApp extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new AboutUsFragment()).commit();
                 break;
             case R.id.nav_store:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new StoreFragment()).commit();
+                StoreFragment storeFragment=new StoreFragment();
+                storeFragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,storeFragment).commit();
                 break;
             case R.id.nav_cart:
                 CartFragment cartFragment=new CartFragment();
@@ -149,7 +177,10 @@ public class MainApp extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment,cartFragment).commit();
                 break;
             case R.id.nav_sign_out:
-                Toast.makeText(this, "Sign out pressed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Signing out", Toast.LENGTH_SHORT).show();
+                Intent intent= new Intent(MainApp.this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

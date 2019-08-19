@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.furni.Interface.ItemClickListener;
@@ -56,20 +57,18 @@ public class ShopFragment extends Fragment {
         View RootView= inflater.inflate(R.layout.fragment_shop_all,container,false);
         recyclerView=RootView.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-     //   layoutManager = new LinearLayoutManager(this.getActivity());
-      //  recyclerView.setLayoutManager(layoutManager);
+        layoutManager = new LinearLayoutManager(this.getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+
+
+       // GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),2);
+        //recyclerView.setLayoutManager(gridLayoutManager);
 
         loadProduct();
 
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),2);
-        recyclerView.setLayoutManager(gridLayoutManager);
-
         adapter.startListening();
         recyclerView.setAdapter(adapter);
-
-
-
-
         return RootView;
     }
 
@@ -79,7 +78,7 @@ public class ShopFragment extends Fragment {
 
         adapter=new FirebaseRecyclerAdapter<Product, RecyclerviewAdapter>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull RecyclerviewAdapter recyclerviewAdapter, final int i, @NonNull Product product) {
+            protected void onBindViewHolder(@NonNull RecyclerviewAdapter recyclerviewAdapter, int i, @NonNull Product product) {
                 Picasso.get().load(product.getImage()).into(recyclerviewAdapter.product_image, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -93,9 +92,8 @@ public class ShopFragment extends Fragment {
                 });
 
                 recyclerviewAdapter.product_name.setText(product.getName());
-                recyclerviewAdapter.product_price.setText(product.getPrice());
+                recyclerviewAdapter.product_price.setText("$ "+product.getPrice());
 
-                Product local= product;
                 recyclerviewAdapter.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
@@ -104,6 +102,7 @@ public class ShopFragment extends Fragment {
                         Log.i(TAG,"OLALA"+ UID);
                         detail_intent.putExtra("UserId",UID);
                         detail_intent.putExtra("ProductId",adapter.getRef(i).getKey());
+                        Log.i(TAG,"product: "+adapter.getRef(i).getKey());
                         startActivityForResult(detail_intent,1);
                     }
                 });

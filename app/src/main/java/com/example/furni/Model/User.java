@@ -2,22 +2,25 @@ package com.example.furni.Model;
 
 public class User {
     private String email;
-    private String uid;
     private String password;
     private float totalSpend;
     private float spentPoint;
 
-    public User(String email,String uid,String password){
+    public User(){
+
+    }
+
+    public User(String email,String password){
         this.email = email;
-        this.uid = uid;
+
         this.password = password;
         this.totalSpend = 0;
         this.spentPoint = 0;
     }
 
-    public User(String email, String uid, String password, float totalSpend, float spentPoint) {
+    public User(String email, String password, float totalSpend, float spentPoint) {
         this.email = email;
-        this.uid = uid;
+
         this.password = password;
         this.totalSpend = totalSpend;
         this.spentPoint = spentPoint;
@@ -26,23 +29,20 @@ public class User {
     public User(User u)
     {
         this.email=u.email;
-        this.uid=u.uid;
         this.password=u.password;
         this.totalSpend=u.totalSpend;
         this.spentPoint=u.spentPoint;
     }
 
-    public void setUser(String email, String uid, String password){
+    public void setUser(String email, String password){
         this.email=email;
-        this.uid=uid;
         this.password=password;
         this.totalSpend=0;
         this.spentPoint=0;
     }
 
-    public void setUser(String email, String uid, String password, float totalSpend, float spentPoint){
+    public void setUser(String email, String password, float totalSpend, float spentPoint){
         this.email=email;
-        this.uid=uid;
         this.password=password;
         this.totalSpend=totalSpend;
         this.spentPoint=spentPoint;
@@ -54,14 +54,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getPassword() {

@@ -24,15 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Hi,"
+        android:text="Hi, there"
         android:textColor="#fff"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#ffff"
-        android:text="@string/nav_header_subtitle" />
 
 </LinearLayout>
