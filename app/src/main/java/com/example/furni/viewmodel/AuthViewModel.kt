@@ -1,4 +1,4 @@
-package com.example.furni.views.login
+package com.example.furni.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.furni.data.AuthState
@@ -13,9 +13,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-        private val authRepository: AuthRepository)
-    : BindingViewModel() {
+class AuthViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : BindingViewModel() {
 
     private val _user = MutableStateFlow(AuthState())
     val user: StateFlow<AuthState> = _user
@@ -24,11 +24,31 @@ class LoginViewModel @Inject constructor(
         authRepository.login(email, password).onEach {
             when (it) {
                 is Resource.Loading -> {
-                    _user.value = AuthState(isLoading =  true)
+                    _user.value = AuthState(isLoading = true)
                 }
+
                 is Resource.Failure -> {
                     _user.value = AuthState(error = it.message ?: "Unknown Error")
                 }
+
+                is Resource.Success -> {
+                    _user.value = AuthState(user = it.value.user)
+                }
+            }
+        }
+    }
+
+    fun register(email: String, password: String) = viewModelScope.launch {
+        authRepository.register(email, password).onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _user.value = AuthState(isLoading = true)
+                }
+
+                is Resource.Failure -> {
+                    _user.value = AuthState(error = it.message ?: "Unknown Error")
+                }
+
                 is Resource.Success -> {
                     _user.value = AuthState(user = it.value.user)
                 }

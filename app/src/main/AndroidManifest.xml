@@ -29,11 +29,22 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
-            android:name=".views.login.LoginActivity"
+            android:name=".views.signup.SignUpActivity"
             android:exported="false" />
+        <activity
+            android:name=".views.login.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity android:name=".ProductDetail" />
         <activity
             android:name=".MainApp"
+            android:exported="true"
             android:label="@string/title_activity_main_app"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -42,14 +53,6 @@
                 <data android:scheme="geo" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".SignUp" />
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
