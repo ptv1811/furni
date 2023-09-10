@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.activity.viewModels
+import androidx.lifecycle.coroutineScope
 import com.example.furni.R
 import com.example.furni.databinding.ActivityLoginBinding
 import com.skydoves.bindables.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_login), OnClickListener {
@@ -20,8 +22,10 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
             signupAct.setOnClickListener(this@LoginActivity)
         }
 
-        loginViewModel.loginResponse.observe(this@LoginActivity) {
-            // TODO
+        lifecycle.coroutineScope.launchWhenCreated {
+            loginViewModel.user.collect {
+                // TODO
+            }
         }
     }
 

@@ -1,7 +1,8 @@
 package com.example.furni.di
 
-import com.example.furni.repository.login.LoginRepository
-import com.example.furni.repository.login.LoginRepositoryImpl
+import com.example.furni.repository.login.AuthRepository
+import com.example.furni.repository.login.AuthRepositoryImpl
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +15,8 @@ class RepositoryModule {
 
     @Provides
     @ViewModelScoped
-    fun provideLoginRepository(): LoginRepository {
-        return LoginRepositoryImpl()
-    }
+    fun provideLoginRepository(impl: AuthRepositoryImpl): AuthRepository = impl
+
+    @Provides
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 }

@@ -59,6 +59,11 @@ dependencies {
     // binding
     implementation "com.github.skydoves:bindables:$versions.bindablesVersion"
 
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:$versions.firebaseBom"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:$versions.playService")
+
     // startup
     implementation "androidx.startup:startup-runtime:$versions.startupVersion"
 

@@ -5,7 +5,7 @@ ext.versions = [
         versionName         : '1.0.2',
 
 // gradle plugins
-        gradleBuildTool     : '7.0.2',
+        gradleBuildTool     : '7.4.2',
         spotlessGradle      : '6.1.0',
 
 // kotlin
@@ -66,6 +66,9 @@ ext.versions = [
 
 // rainbow
         rainbowVersion      : '1.0.4',
+// firebase
+        firebaseBom         : '32.2.3',
+        playService         : '20.7.0',
 
 // debugging
         timberVersion       : '5.0.1',
