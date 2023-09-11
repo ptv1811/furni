@@ -29,6 +29,10 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:theme">
         <activity
+            android:name=".views.home.HomeScreenActivity"
+            android:exported="false"
+            android:taskAffinity=".views.home.HomeScreenActivity" />
+        <activity
             android:name=".views.signup.SignUpActivity"
             android:exported="false" />
         <activity
@@ -39,7 +43,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".ProductDetail" />
         <activity
