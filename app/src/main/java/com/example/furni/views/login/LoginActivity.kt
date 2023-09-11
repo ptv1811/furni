@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.furni.R
 import com.example.furni.databinding.ActivityLoginBinding
 import com.example.furni.viewmodel.AuthViewModel
+import com.example.furni.views.home.HomeScreenActivity
 import com.example.furni.views.signup.SignUpActivity
 import com.skydoves.bindables.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +44,7 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
                     it.user?.let {
                         finish()
-                        // TODO: Start MainActivity
+                        HomeScreenActivity.startActivity(this@LoginActivity)
                     }
                 }
             }

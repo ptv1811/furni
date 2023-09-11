@@ -1,8 +1,11 @@
 package com.example.furni.di
 
+import com.example.furni.repository.home.HomeRepository
+import com.example.furni.repository.home.HomeRepositoryImpl
 import com.example.furni.repository.login.AuthRepository
 import com.example.furni.repository.login.AuthRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,4 +22,10 @@ class RepositoryModule {
 
     @Provides
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    fun provideHomeRepository(impl: HomeRepositoryImpl): HomeRepository = impl
+
+    @Provides
+    fun provideFirebaseDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance()
 }
