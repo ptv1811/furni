@@ -13,6 +13,8 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.furni.R
 import com.example.furni.databinding.ActivityHomeScreenBinding
+import com.example.furni.ui.login.LoginActivity
+import com.example.furni.viewmodel.AuthViewModel
 import com.example.furni.viewmodel.HomeScreenViewModel
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.skydoves.bindables.BindingActivity
@@ -23,7 +25,7 @@ class HomeScreenActivity :
     BindingActivity<ActivityHomeScreenBinding>(R.layout.activity_home_screen),
     OnNavigationItemSelectedListener {
 
-    private val homeViewModel: HomeScreenViewModel by viewModels()
+    private val authViewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,30 +61,20 @@ class HomeScreenActivity :
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.nav_shop -> {
-//                // Fragment shop
-//            }
-//
-//            R.id.nav_about_us -> {
-//                // Fragment about us
-//            }
-//
-//            R.id.nav_store -> {
-//                // Fragment store
-//            }
-//
-//            R.id.nav_cart -> {
-//                // Fragment cart
-//            }
-//
-//            R.id.nav_sign_out -> {
-//
-//            }
-//        }
+        when (item.itemId) {
+            R.id.nav_sign_out -> {
+                signOut()
+            }
+        }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun signOut() {
+        authViewModel.logout()
+        LoginActivity.startActivity(this@HomeScreenActivity)
+        finish()
     }
 
     companion object {

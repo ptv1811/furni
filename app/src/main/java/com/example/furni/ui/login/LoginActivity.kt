@@ -1,5 +1,7 @@
 package com.example.furni.ui.login
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
@@ -31,20 +33,23 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authViewModel.user.collect {
-                    if (it.isLoading) {
-                        binding.progressBar.visibility = View.VISIBLE
-                    }
+                authViewModel.user.collect { authState ->
+                    authState?.let {
+                        if (it.isLoading) {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
 
-                    if (it.error.isNotBlank()) {
-                        binding.progressBar.visibility = View.GONE
-                        val toast = Toast.makeText(this@LoginActivity, it.error, Toast.LENGTH_SHORT)
-                        toast.show()
-                    }
+                        if (it.error.isNotBlank()) {
+                            binding.progressBar.visibility = View.GONE
+                            val toast =
+                                Toast.makeText(this@LoginActivity, it.error, Toast.LENGTH_SHORT)
+                            toast.show()
+                        }
 
-                    it.user?.let {
-                        finish()
-                        HomeScreenActivity.startActivity(this@LoginActivity)
+                        it.user?.let {
+                            HomeScreenActivity.startActivity(this@LoginActivity)
+                            finish()
+                        }
                     }
                 }
             }
@@ -74,5 +79,14 @@ class LoginActivity : BindingActivity<ActivityLoginBinding>(R.layout.activity_lo
 
     private fun signUp() {
         SignUpActivity.startActivity(this@LoginActivity)
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            Intent(context, LoginActivity::class.java).also { intent ->
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+            }
+        }
     }
 }
