@@ -8,6 +8,6 @@ package com.example.furni.data.base
  * </p>
  */
 open class NetworkObject constructor(
-    val isLoading: Boolean = false,
-    val error: String = ""
+    open val isLoading: Boolean = false,
+    open val error: String = ""
 )

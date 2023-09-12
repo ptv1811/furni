@@ -1,4 +1,4 @@
-package com.example.furni.Fragment;
+package com.example.furni.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

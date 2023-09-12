@@ -66,6 +66,10 @@ ext.versions = [
 
 // rainbow
         rainbowVersion      : '1.0.4',
+
+//fragment
+        fragment            : '2.7.2',
+
 // firebase
         firebaseBom         : '32.2.3',
         playService         : '20.7.0',

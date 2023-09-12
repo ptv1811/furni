@@ -53,6 +53,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$versions.lifecycleVersion"
     implementation "androidx.room:room-runtime:$versions.roomVersion"
     implementation "androidx.room:room-ktx:$versions.roomVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$versions.fragment"
+    implementation "androidx.navigation:navigation-ui-ktx:$versions.fragment"
     kapt "androidx.room:room-compiler:$versions.roomVersion"
     testImplementation "androidx.arch.core:core-testing:$versions.archCompomentVersion"
 
