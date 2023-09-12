@@ -17,8 +17,8 @@ class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : BindingViewModel() {
 
-    private val _user = MutableStateFlow(AuthState(isLoading = true))
-    val user: StateFlow<AuthState> = _user
+    private val _user = MutableStateFlow<AuthState?>(AuthState(isLoading = true))
+    val user: StateFlow<AuthState?> = _user
 
     fun login(email: String, password: String) = viewModelScope.launch {
         authRepository.login(email, password).onEach {
@@ -54,5 +54,10 @@ class AuthViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun logout() = viewModelScope.launch {
+        authRepository.logout()
+        _user.value = null
     }
 }

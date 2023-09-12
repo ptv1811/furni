@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.furni.R
 import com.example.furni.databinding.ActivitySignUpBinding
+import com.example.furni.ui.home.HomeScreenActivity
 import com.example.furni.viewmodel.AuthViewModel
 import com.skydoves.bindables.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,21 +34,23 @@ class SignUpActivity : BindingActivity<ActivitySignUpBinding>(R.layout.activity_
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authViewModel.user.collect {
-                    if (it.isLoading) {
-                        binding.pBar.visibility = VISIBLE
-                    }
+                authViewModel.user.collect {authState ->
+                    authState?.let {
+                        if (it.isLoading) {
+                            binding.pBar.visibility = VISIBLE
+                        }
 
-                    if (it.error.isNotBlank()) {
-                        binding.pBar.visibility = GONE
-                        val toast =
-                            Toast.makeText(this@SignUpActivity, it.error, Toast.LENGTH_SHORT)
-                        toast.show()
-                    }
+                        if (it.error.isNotBlank()) {
+                            binding.pBar.visibility = GONE
+                            val toast =
+                                Toast.makeText(this@SignUpActivity, it.error, Toast.LENGTH_SHORT)
+                            toast.show()
+                        }
 
-                    it.user?.let {
-                        finish()
-                        // TODO: Start MainActivity
+                        it.user?.let {
+                            HomeScreenActivity.startActivity(this@SignUpActivity)
+                            finish()
+                        }
                     }
                 }
             }

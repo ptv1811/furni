@@ -58,4 +58,8 @@ class AuthRepositoryImpl @Inject constructor(
                 emit(Resource.Failure(message = e.localizedMessage ?: ""))
             }
         }
+
+    override suspend fun logout() {
+        mAuth.signOut()
+    }
 }
