@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
  * </p>
  */
 interface HomeRepository {
-    
     suspend fun <T : Any> fetchInformationByClass(
         path: String,
         typeClass: Class<T>

@@ -12,10 +12,32 @@
         android:fitsSystemWindows="true"
         tools:openDrawer="start">
 
-        <include
-            layout="@layout/app_bar_main_app"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/appBar"
+                layout="@layout/app_bar_main_app"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <FrameLayout
+                android:id="@+id/flContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/navHostFragment"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:defautNavHost="true"
+                    app:navGraph="@navigation/navigation_graph" />
+
+            </FrameLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"

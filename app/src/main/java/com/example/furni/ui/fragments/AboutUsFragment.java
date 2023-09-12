@@ -1,4 +1,4 @@
-package com.example.furni.Fragment;
+package com.example.furni.ui.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.example.furni.views.signup
+package com.example.furni.ui.signup
 
 import android.content.Context
 import android.content.Intent

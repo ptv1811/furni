@@ -6,5 +6,7 @@ data class Store constructor(
     var address: String? = null,
     var phone: String? = null,
     var longitude: String? = null,
-    var latitude: String? = null
+    var latitude: String? = null,
+    override val isLoading: Boolean = false,
+    override val error: String = "",
 ) : NetworkObject()

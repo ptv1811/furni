@@ -1,4 +1,4 @@
-package com.example.furni.views.login
+package com.example.furni.ui.login
 
 import android.os.Bundle
 import android.view.View
@@ -11,8 +11,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.furni.R
 import com.example.furni.databinding.ActivityLoginBinding
 import com.example.furni.viewmodel.AuthViewModel
-import com.example.furni.views.home.HomeScreenActivity
-import com.example.furni.views.signup.SignUpActivity
+import com.example.furni.ui.home.HomeScreenActivity
+import com.example.furni.ui.signup.SignUpActivity
 import com.skydoves.bindables.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
