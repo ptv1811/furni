@@ -1,13 +1,6 @@
 package com.example.furni;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.net.Uri;
-import android.nfc.Tag;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -15,12 +8,14 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
-import com.example.furni.Fragment.ShopFragment;
 import com.example.furni.Model.Order;
-import com.example.furni.Model.Product;
+import com.example.furni.data.product.Product;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.ar.core.Anchor;
@@ -54,7 +49,7 @@ public class ProductDetail extends AppCompatActivity {
     String productID;
     String Model_SFB;
     int Quantity;
-    int order_amount=0;
+    int order_amount = 0;
     Order order;
 
     private FirebaseDatabase firebaseDatabase;
@@ -72,14 +67,14 @@ public class ProductDetail extends AppCompatActivity {
         product_description = findViewById(R.id.description_product);
         price_product = findViewById(R.id.price_product);
         name_product = findViewById(R.id.name_product);
-        back=findViewById(R.id.back);
+        back = findViewById(R.id.back);
         amount = findViewById(R.id.amount);
         add_to_cart = findViewById(R.id.add_to_cart);
         collapsingToolbarLayout = findViewById(R.id.collapse);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         product = firebaseDatabase.getReference("Product");
-        myRef=firebaseDatabase.getReference();
+        myRef = firebaseDatabase.getReference();
 
 
         //collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapseAppBar);
@@ -95,10 +90,10 @@ public class ProductDetail extends AppCompatActivity {
 
         if (getIntent() != null) {
             productID = getIntent().getStringExtra("ProductId");
-            UID=getIntent().getStringExtra("UserId");
-            String TAG="CC";
-            Log.i(TAG,"UID: "+UID);
-            Log.i(TAG,"productID: "+productID);
+            UID = getIntent().getStringExtra("UserId");
+            String TAG = "CC";
+            Log.i(TAG, "UID: " + UID);
+            Log.i(TAG, "productID: " + productID);
         }
         if (!productID.isEmpty()) {
             getProductDetail(productID);
@@ -110,23 +105,23 @@ public class ProductDetail extends AppCompatActivity {
         product.child(productID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Product p=dataSnapshot.getValue(Product.class);
+                Product p = dataSnapshot.getValue(Product.class);
 
                 Picasso.get().load(p.getImage()).into(image_product);
-                price_product.setText("$ "+p.getPrice());
+                price_product.setText("$ " + p.getPrice());
                 name_product.setText(p.getName());
                 product_description.setText(p.getDescription());
 
-                Model_SFB=dataSnapshot.child("Sfb").getValue().toString();
-                String tag="hi";
-                Log.i(tag,"productid: "+productID);
+                Model_SFB = dataSnapshot.child("Sfb").getValue().toString();
+                String tag = "hi";
+                Log.i(tag, "productid: " + productID);
 
-                Log.i(tag,"hello there" + p.getName());
-                Log.i(tag,"HMM: "+Model_SFB);
-                Quantity=Integer.parseInt(dataSnapshot.child("Quantity").getValue().toString());
-                Log.i(tag,"quantity: "+Quantity);
-                amount.setRange(1,Quantity);
-                Log.i(tag,"amount "+amount.getNumber());
+                Log.i(tag, "hello there" + p.getName());
+                Log.i(tag, "HMM: " + Model_SFB);
+                Quantity = Integer.parseInt(dataSnapshot.child("Quantity").getValue().toString());
+                Log.i(tag, "quantity: " + Quantity);
+                amount.setRange(1, Quantity);
+                Log.i(tag, "amount " + amount.getNumber());
 
 
                 amount.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
@@ -135,8 +130,8 @@ public class ProductDetail extends AppCompatActivity {
                         add_to_cart.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                order=new Order(productID,p.getName(),amount.getNumber(),p.getPrice(),p.getImage());
-                                myRef.child("Users/").child(UID+"/").child("orders/").child(String.valueOf(System.currentTimeMillis()))
+                                order = new Order(productID, p.getName(), amount.getNumber(), p.getPrice(), p.getImage());
+                                myRef.child("Users/").child(UID + "/").child("orders/").child(String.valueOf(System.currentTimeMillis()))
                                         .setValue(order);
                                 Toast.makeText(ProductDetail.this, "Added to cart", Toast.LENGTH_SHORT).show();
                             }
@@ -145,17 +140,17 @@ public class ProductDetail extends AppCompatActivity {
                 });
 
 
-                arFragment=(ArFragment)getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
-
+                arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ar_fragment);
 
 
                 arFragment.setOnTapArPlaneListener(new BaseArFragment.OnTapArPlaneListener() {
                     @Override
                     public void onTapPlane(HitResult hitResult, Plane plane, MotionEvent motionEvent) {
-                      placeModel(arFragment,hitResult.createAnchor(),Model_SFB);
+                        placeModel(arFragment, hitResult.createAnchor(), Model_SFB);
                     }
                 });
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -164,28 +159,27 @@ public class ProductDetail extends AppCompatActivity {
     }
 
 
-
     private void placeModel(ArFragment arFragment, Anchor anchor, String model_sfb) {
 
         ModelRenderable.builder()
-                .setSource(this,RenderableSource.builder()
-                .setSource(this,Uri.parse(model_sfb),RenderableSource.SourceType.GLB)
-                .setScale(0.005f)
-                .setRecenterMode(RenderableSource.RecenterMode.ROOT)
-                .build())
+                .setSource(this, RenderableSource.builder()
+                        .setSource(this, Uri.parse(model_sfb), RenderableSource.SourceType.GLB)
+                        .setScale(0.005f)
+                        .setRecenterMode(RenderableSource.RecenterMode.ROOT)
+                        .build())
                 .setRegistryId(model_sfb)
                 .build()
-                .thenAccept(modelRenderable -> addNodetoScreen(arFragment,anchor,modelRenderable))
+                .thenAccept(modelRenderable -> addNodetoScreen(arFragment, anchor, modelRenderable))
                 .exceptionally(throwable -> {
-                    AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     return null;
                 });
     }
 
     private void addNodetoScreen(ArFragment arFragment, Anchor anchor, ModelRenderable modelRenderable) {
 
-        AnchorNode anchorNode=new AnchorNode(anchor);
-        TransformableNode transformableNode=new TransformableNode(arFragment.getTransformationSystem());
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        TransformableNode transformableNode = new TransformableNode(arFragment.getTransformationSystem());
 
         transformableNode.setRenderable(modelRenderable);
         transformableNode.setParent(anchorNode);
