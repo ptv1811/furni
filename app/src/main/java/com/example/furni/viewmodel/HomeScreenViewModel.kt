@@ -1,6 +1,7 @@
 package com.example.furni.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.example.furni.data.aboutus.AboutUs
 import com.example.furni.data.network.Resource
 import com.example.furni.data.store.Store
 import com.example.furni.repository.home.HomeRepository
@@ -28,11 +29,14 @@ class HomeScreenViewModel @Inject constructor(
     private val _store = MutableStateFlow(Store())
     val store: StateFlow<Store> = _store
 
+    private val _aboutUs = MutableStateFlow(AboutUs())
+    val aboutUs: StateFlow<AboutUs> = _aboutUs
+
     fun getStoreInformation() = viewModelScope.launch {
         homeRepository.fetchInformationByClass("Shop", Store::class.java).onEach {
             when (it) {
                 is Resource.Loading -> {
-
+                    _store.value = Store(isLoading = true)
                 }
 
                 is Resource.Failure -> {
@@ -41,6 +45,24 @@ class HomeScreenViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     _store.value = it.value
+                }
+            }
+        }
+    }
+    
+    fun getAboutUsInformation() = viewModelScope.launch {
+        homeRepository.fetchInformationByClass("AboutUs", AboutUs::class.java).onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _aboutUs.value = AboutUs(isLoading = true)
+                }
+
+                is Resource.Failure -> {
+                    _aboutUs.value = AboutUs(error = it.message ?: "Unknown Error")
+                }
+
+                is Resource.Success -> {
+                    _aboutUs.value = it.value
                 }
             }
         }

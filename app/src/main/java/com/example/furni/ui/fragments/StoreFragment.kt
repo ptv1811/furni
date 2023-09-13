@@ -6,7 +6,9 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
 import android.view.View.OnClickListener
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -37,11 +39,27 @@ class StoreFragment : BindingFragment<FragmentStoreBinding>(R.layout.fragment_st
             it.lifecycleScope.launch {
                 it.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     homeScreenViewModel.store.collect { store ->
-                        updateStoreInformationUI(store)
+                        if (store.isLoading) {
+                            binding.pBar.visibility = VISIBLE
+                        } else
+
+                            if (store.error.isNotBlank()) {
+                                binding.pBar.visibility = View.GONE
+                                val toast =
+                                    Toast.makeText(activity, store.error, Toast.LENGTH_SHORT)
+                                toast.show()
+                            } else {
+                                updateStoreInformationUI(store)
+                            }
                     }
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeScreenViewModel.getStoreInformation()
     }
 
     override fun onClick(v: View?) {
@@ -91,6 +109,7 @@ class StoreFragment : BindingFragment<FragmentStoreBinding>(R.layout.fragment_st
 
     private fun updateStoreInformationUI(store: Store) {
         binding {
+            pBar.visibility = GONE
             address.text = store.address
             phone.text = store.phone
             longitude = store.longitude!!
