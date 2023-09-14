@@ -24,6 +24,7 @@ class RepositoryModule {
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
+    @ViewModelScoped
     fun provideHomeRepository(impl: HomeRepositoryImpl): HomeRepository = impl
 
     @Provides

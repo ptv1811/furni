@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.furni.Interface.ItemClickListener;
 import com.example.furni.ProductDetail;
 import com.example.furni.R;
-import com.example.furni.RecyclerviewAdapter;
 import com.example.furni.data.product.Product;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -33,7 +32,7 @@ public class ShopFragment extends Fragment {
     RecyclerView recyclerView;
     String UID;
     private FirebaseRecyclerOptions<Product> options;
-    private FirebaseRecyclerAdapter<Product, RecyclerviewAdapter> adapter;
+    private FirebaseRecyclerAdapter<Product, RecyclerViewHolder> adapter;
 
 
     RecyclerView.LayoutManager layoutManager;
@@ -69,9 +68,9 @@ public class ShopFragment extends Fragment {
         options = new FirebaseRecyclerOptions.Builder<Product>()
                 .setQuery(myRef, Product.class).build();
 
-        adapter = new FirebaseRecyclerAdapter<Product, RecyclerviewAdapter>(options) {
+        adapter = new FirebaseRecyclerAdapter<Product, RecyclerViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull RecyclerviewAdapter recyclerviewAdapter, int i, @NonNull Product product) {
+            protected void onBindViewHolder(@NonNull RecyclerViewHolder recyclerviewAdapter, int i, @NonNull Product product) {
                 Picasso.get().load(product.getImage()).into(recyclerviewAdapter.product_image, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -103,11 +102,11 @@ public class ShopFragment extends Fragment {
 
             @NonNull
             @Override
-            public RecyclerviewAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_layout_recycler, parent, false);
 
-                return new RecyclerviewAdapter(view);
+                return new RecyclerViewHolder(view);
             }
         };
 
