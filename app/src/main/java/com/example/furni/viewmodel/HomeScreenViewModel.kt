@@ -3,6 +3,8 @@ package com.example.furni.viewmodel
 import androidx.lifecycle.viewModelScope
 import com.example.furni.data.aboutus.AboutUs
 import com.example.furni.data.network.Resource
+import com.example.furni.data.product.Product
+import com.example.furni.data.product.Products
 import com.example.furni.data.store.Store
 import com.example.furni.repository.home.HomeRepository
 import com.skydoves.bindables.BindingViewModel
@@ -32,6 +34,9 @@ class HomeScreenViewModel @Inject constructor(
     private val _aboutUs = MutableStateFlow(AboutUs())
     val aboutUs: StateFlow<AboutUs> = _aboutUs
 
+    private val _productList = MutableStateFlow(Products(emptyList()))
+    val productList: StateFlow<Products> = _productList
+
     fun getStoreInformation() = viewModelScope.launch {
         homeRepository.fetchInformationByClass("Shop", Store::class.java).onEach {
             when (it) {
@@ -49,7 +54,7 @@ class HomeScreenViewModel @Inject constructor(
             }
         }
     }
-    
+
     fun getAboutUsInformation() = viewModelScope.launch {
         homeRepository.fetchInformationByClass("AboutUs", AboutUs::class.java).onEach {
             when (it) {
@@ -63,6 +68,24 @@ class HomeScreenViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     _aboutUs.value = it.value
+                }
+            }
+        }
+    }
+
+    fun getProductList() = viewModelScope.launch {
+        homeRepository.fetchListInformationByClass("Product", Product::class.java).onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _productList.value = Products(isLoading = true)
+                }
+
+                is Resource.Failure -> {
+                    _productList.value = Products(error = it.message ?: "Unknown Error")
+                }
+
+                is Resource.Success -> {
+                    _productList.value = Products(it.value)
                 }
             }
         }

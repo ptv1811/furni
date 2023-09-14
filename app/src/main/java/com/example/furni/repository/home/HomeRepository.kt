@@ -15,4 +15,9 @@ interface HomeRepository {
         path: String,
         typeClass: Class<T>
     ): Flow<Resource<T>>
+
+    suspend fun <T : Any> fetchListInformationByClass(
+        path: String,
+        typeClass: Class<T>
+    ): Flow<Resource<List<T>>>
 }

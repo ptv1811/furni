@@ -46,6 +46,35 @@ class HomeRepositoryImpl @Inject constructor(
             ref.removeEventListener(infoListener)
         }
     }
-    
 
+    override suspend fun <T : Any> fetchListInformationByClass(
+        path: String,
+        typeClass: Class<T>
+    ): Flow<Resource<List<T>>> = callbackFlow {
+        val ref = mDatabase.getReference(path)
+
+        val infoListByClass = mutableListOf<T>()
+
+        val infoListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (childSnapshot in snapshot.children) {
+                    childSnapshot.getValue(typeClass)?.let { info ->
+                        infoListByClass.add(info)
+                    }
+                }
+
+                this@callbackFlow.trySendBlocking(Resource.Success(infoListByClass))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                this@callbackFlow.trySendBlocking(Resource.Failure(error.toException().localizedMessage))
+            }
+        }
+
+        ref.addValueEventListener(infoListener)
+
+        awaitClose {
+            ref.removeEventListener(infoListener)
+        }
+    }
 }
