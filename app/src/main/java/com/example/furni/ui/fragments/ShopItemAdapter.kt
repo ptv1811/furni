@@ -1,5 +1,6 @@
 package com.example.furni.ui.fragments
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -8,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.example.furni.R
 import com.example.furni.data.product.Product
 import com.example.furni.databinding.CustomLayoutRecyclerBinding
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.squareup.picasso.Picasso
 
-class ShopItemAdapter(options: FirebaseRecyclerOptions<Product>) :
-    FirebaseRecyclerAdapter<Product, ShopItemAdapter.RecyclerViewHolder>(options) {
+class ShopItemAdapter :
+    RecyclerView.Adapter<ShopItemAdapter.RecyclerViewHolder>() {
+
+    private val items: MutableList<Product> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -29,8 +31,22 @@ class ShopItemAdapter(options: FirebaseRecyclerOptions<Product>) :
         }
     }
 
-    override fun onBindViewHolder(p0: RecyclerViewHolder, p1: Int, p2: Product) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun setProductList(productList: List<Product>) {
+        items.clear()
+        items.addAll(productList)
+        notifyDataSetChanged()
+    }
 
+    override fun getItemCount() = items.size
+
+    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
+        holder.binding.apply {
+            val product = items[position]
+            Picasso.get().load(product.image).into(productImage)
+            productName.text = product.name
+            productPrice.text = product.price
+        }
     }
 
     class RecyclerViewHolder(val binding: CustomLayoutRecyclerBinding) :
