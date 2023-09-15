@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.example.furni.R
 import com.example.furni.data.product.Product
 import com.example.furni.databinding.CustomLayoutRecyclerBinding
+import com.example.furni.ui.product.ProductDetailActivity
 import com.squareup.picasso.Picasso
 
 class ShopItemAdapter :
@@ -26,7 +27,7 @@ class ShopItemAdapter :
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition.takeIf { it != NO_POSITION }
                     ?: return@setOnClickListener
-                // TODO start ProductDetailActivity
+                ProductDetailActivity.startActivity(binding.root, position)
             }
         }
     }
