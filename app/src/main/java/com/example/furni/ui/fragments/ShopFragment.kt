@@ -2,6 +2,7 @@ package com.example.furni.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,7 +12,7 @@ import com.example.furni.R
 import com.example.furni.databinding.FragmentShopAllBinding
 import com.example.furni.viewmodel.HomeScreenViewModel
 import com.skydoves.bindables.BindingFragment
-import kotlinx.coroutines.flow.collect
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 /**
@@ -21,6 +22,8 @@ import kotlinx.coroutines.launch
  * <p>
  * </p>
  */
+
+@AndroidEntryPoint
 class ShopFragment : BindingFragment<FragmentShopAllBinding>(R.layout.fragment_shop_all) {
 
     private val homeScreenViewModel: HomeScreenViewModel by activityViewModels()
@@ -39,8 +42,17 @@ class ShopFragment : BindingFragment<FragmentShopAllBinding>(R.layout.fragment_s
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeScreenViewModel.productList.collect {
-                    // TODO: handle loading and error
-                    adapter.setProductList(it.productList)
+                    if (it.isLoading) {
+                        binding.progressBar.visibility = View.VISIBLE
+                    } else if (it.error.isNotBlank()) {
+                        binding.progressBar.visibility = View.GONE
+                        val toast =
+                            Toast.makeText(activity, it.error, Toast.LENGTH_SHORT)
+                        toast.show()
+                    } else {
+                        adapter.setProductList(it.productList)
+                    }
+
                 }
             }
         }

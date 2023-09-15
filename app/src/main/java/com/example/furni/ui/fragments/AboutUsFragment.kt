@@ -12,6 +12,7 @@ import com.example.furni.data.aboutus.AboutUs
 import com.example.furni.databinding.FragmentAboutUsBinding
 import com.example.furni.viewmodel.HomeScreenViewModel
 import com.skydoves.bindables.BindingFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -22,6 +23,8 @@ import kotlinx.coroutines.launch
  * <p>
  * </p>
  */
+
+@AndroidEntryPoint
 class AboutUsFragment : BindingFragment<FragmentAboutUsBinding>(R.layout.fragment_about_us) {
     private val homeScreenViewModel: HomeScreenViewModel by activityViewModels()
 
