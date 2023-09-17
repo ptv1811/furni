@@ -50,7 +50,7 @@ class ShopFragment : BindingFragment<FragmentShopAllBinding>(R.layout.fragment_s
                             Toast.makeText(activity, it.error, Toast.LENGTH_SHORT)
                         toast.show()
                     } else {
-                        adapter.setProductList(it.productList)
+                        adapter.setItems(it.productList)
                     }
 
                 }
