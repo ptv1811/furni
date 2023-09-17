@@ -10,9 +10,8 @@ import com.squareup.picasso.Picasso
 class ShopItemAdapter : BaseRecyclerViewAdapter<Product, CustomLayoutRecyclerBinding>(
     R.layout.custom_layout_recycler,
     clickListener = { pos, binding ->
-        val position = pos.takeIf { it != NO_POSITION }
-        if (position != null) {
-            ProductDetailActivity.startActivity(binding.root, position)
+        pos.takeIf { it != NO_POSITION }?.let {
+            ProductDetailActivity.startActivity(binding.root, it)
         }
     },
 
