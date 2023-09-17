@@ -1,5 +1,6 @@
 package com.example.furni.repository.home
 
+import com.example.furni.data.cart.Cart
 import com.example.furni.data.network.Resource
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -49,7 +50,8 @@ class HomeRepositoryImpl @Inject constructor(
 
     override suspend fun <T : Any> fetchListInformationByClass(
         path: String,
-        typeClass: Class<T>
+        typeClass: Class<T>,
+        str: String
     ): Flow<Resource<List<T>>> = callbackFlow {
         val ref = mDatabase.getReference(path)
 
@@ -75,6 +77,37 @@ class HomeRepositoryImpl @Inject constructor(
 
         awaitClose {
             ref.removeEventListener(infoListener)
+        }
+    }
+
+    override suspend fun fetchCartByUser(
+        uid: String
+    ): Flow<Resource<List<Cart>>> = callbackFlow {
+        val ref = mDatabase.reference.child("Users/").child("$uid/").child("orders/")
+
+        val userCart = mutableListOf<Cart>()
+
+        val userCartListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (childSnapshot in snapshot.children) {
+                    childSnapshot.getValue(Cart::class.java)?.let { info ->
+                        userCart.add(info)
+                    }
+                }
+
+                this@callbackFlow.trySendBlocking(Resource.Success(userCart))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                this@callbackFlow.trySendBlocking(Resource.Failure(error.toException().localizedMessage))
+            }
+
+        }
+
+        ref.addValueEventListener(userCartListener)
+
+        awaitClose {
+            ref.removeEventListener(userCartListener)
         }
     }
 }

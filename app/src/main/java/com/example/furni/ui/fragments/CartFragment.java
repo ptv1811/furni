@@ -24,7 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.furni.CartAdapter;
-import com.example.furni.Model.Cart;
+import com.example.furni.data.cart.Cart;
 import com.example.furni.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -95,7 +95,7 @@ public class CartFragment extends Fragment {
         adapter=new FirebaseRecyclerAdapter<Cart, CartAdapter>(option) {
             @Override
             protected void onBindViewHolder(@NonNull CartAdapter cartAdapter, int i, @NonNull Cart cart) {
-                Picasso.get().load(cart.getProductImage()).into(cartAdapter.imageView, new Callback() {
+                Picasso.get().load(cart.productImage).into(cartAdapter.imageView, new Callback() {
                     @Override
                     public void onSuccess() {
 
@@ -108,22 +108,22 @@ public class CartFragment extends Fragment {
                 });
 
                 String tag="sdsf";
-                Log.i(tag,"cart "+ cart.getProductAmount());
+                Log.i(tag,"cart "+ cart.productAmount);
 //                int quantity=Integer.parseInt(cart.getProductAmout());
                 //Log.i(tag,"quantity: "+quantity);
 
-                cartAdapter.name_of_product.setText(cart.getProductName());
-                cartAdapter.amount_of_product.setText("Amount: "+cart.getProductAmount());
-                cartAdapter.price_of_product.setText("$ "+ cart.getProductPrice());
+                cartAdapter.name_of_product.setText(cart.productName);
+                cartAdapter.amount_of_product.setText("Amount: "+ cart.productAmount);
+                cartAdapter.price_of_product.setText("$ "+ cart.productPrice);
 
                 int price,amount;
-                amount=Integer.parseInt(cart.getProductAmount());
-                price=Integer.parseInt(cart.getProductPrice());
+                amount=Integer.parseInt(cart.productAmount);
+                price=Integer.parseInt(cart.productPrice);
                 totalprice+=amount*price;
-                Log.i(tag,"productid " + cart.getProductId());
-                request=request.child("Product/").child(cart.getOrderID()+"/");
+                Log.i(tag,"productid " + cart.productId);
+                request=request.child("Product/").child(cart.orderID +"/");
 
-                int am=Integer.parseInt(cart.getProductAmount());
+                int am=Integer.parseInt(cart.productAmount);
 
                 totalPrice.setText("$"+String.valueOf(totalprice));
 

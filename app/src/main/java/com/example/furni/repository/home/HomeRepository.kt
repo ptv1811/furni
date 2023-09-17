@@ -1,5 +1,6 @@
 package com.example.furni.repository.home
 
+import com.example.furni.data.cart.Cart
 import com.example.furni.data.network.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -18,6 +19,9 @@ interface HomeRepository {
 
     suspend fun <T : Any> fetchListInformationByClass(
         path: String,
-        typeClass: Class<T>
+        typeClass: Class<T>,
+        str: String = "",
     ): Flow<Resource<List<T>>>
+
+    suspend fun fetchCartByUser(uid: String): Flow<Resource<List<Cart>>>
 }

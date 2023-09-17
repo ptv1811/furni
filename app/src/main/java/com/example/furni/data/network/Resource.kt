@@ -1,7 +1,5 @@
 package com.example.furni.data.network
 
-import okhttp3.ResponseBody
-
 /**
  * Provides a wrapper around API response
  *

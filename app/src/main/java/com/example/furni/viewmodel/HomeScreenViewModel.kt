@@ -2,6 +2,7 @@ package com.example.furni.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.example.furni.data.aboutus.AboutUs
+import com.example.furni.data.cart.UserCartList
 import com.example.furni.data.network.Resource
 import com.example.furni.data.product.Product
 import com.example.furni.data.product.Products
@@ -36,6 +37,9 @@ class HomeScreenViewModel @Inject constructor(
 
     private val _productList = MutableStateFlow(Products(emptyList()))
     val productList: StateFlow<Products> = _productList
+
+    private val _cartList = MutableStateFlow(UserCartList(emptyList()))
+    val userCartList: StateFlow<UserCartList> = _cartList
 
     fun getStoreInformation() = viewModelScope.launch {
         homeRepository.fetchInformationByClass("Shop", Store::class.java).onEach {
@@ -86,6 +90,24 @@ class HomeScreenViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     _productList.value = Products(it.value)
+                }
+            }
+        }
+    }
+
+    fun getUserCart(uid: String) = viewModelScope.launch {
+        homeRepository.fetchCartByUser(uid).onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _cartList.value = UserCartList(isLoading = true)
+                }
+
+                is Resource.Failure -> {
+                    _cartList.value = UserCartList(error = it.message ?: "Unknown Error")
+                }
+
+                is Resource.Success -> {
+                    _cartList.value = UserCartList(it.value)
                 }
             }
         }
