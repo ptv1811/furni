@@ -18,7 +18,7 @@ import com.example.furni.Fragment.AboutUsFragment;
 import com.example.furni.Fragment.CartFragment;
 import com.example.furni.Fragment.ShopFragment;
 import com.example.furni.Fragment.StoreFragment;
-import com.example.furni.Model.User;
+import com.example.furni.data.user.User;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
