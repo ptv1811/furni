@@ -50,6 +50,7 @@ class ShopFragment : BindingFragment<FragmentShopAllBinding>(R.layout.fragment_s
                             Toast.makeText(activity, it.error, Toast.LENGTH_SHORT)
                         toast.show()
                     } else {
+                        binding.progressBar.visibility = View.GONE
                         adapter.setItems(it.productList)
                     }
 

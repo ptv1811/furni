@@ -110,4 +110,9 @@ class HomeRepositoryImpl @Inject constructor(
             ref.removeEventListener(userCartListener)
         }
     }
+
+    override suspend fun removeCartValue(uid: String) {
+        mDatabase.reference.child("Users/").child("$uid/").child("orders/").removeValue()
+
+    }
 }

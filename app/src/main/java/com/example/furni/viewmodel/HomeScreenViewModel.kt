@@ -112,4 +112,8 @@ class HomeScreenViewModel @Inject constructor(
             }
         }
     }
+
+    fun removeCartValue(uid: String) = viewModelScope.launch {
+        homeRepository.removeCartValue(uid)
+    }
 }
