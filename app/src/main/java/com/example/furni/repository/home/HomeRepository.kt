@@ -24,4 +24,5 @@ interface HomeRepository {
     ): Flow<Resource<List<T>>>
 
     suspend fun fetchCartByUser(uid: String): Flow<Resource<List<Cart>>>
+    suspend fun removeCartValue(uid: String)
 }

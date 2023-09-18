@@ -10,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 
 open class BaseRecyclerViewAdapter<T : Any, VDB : ViewDataBinding>(
     @LayoutRes val layoutId: Int,
-    private val clickListener: (Int, VDB) -> Unit,
-    private val onBindViewHolderCallback: (T, VDB) -> Unit
+    private val clickListener: (Int, VDB) -> Unit = { _, _ ->
+    },
+    private val onBindViewHolderCallback: (T, VDB) -> Unit = { _, _ ->
+    }
 ) : RecyclerView.Adapter<BaseRecyclerViewAdapter.RecyclerViewHolder<VDB>>() {
 
     private val items: MutableList<T> = mutableListOf()
