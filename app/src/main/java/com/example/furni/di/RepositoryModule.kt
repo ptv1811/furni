@@ -4,6 +4,8 @@ import com.example.furni.repository.home.HomeRepository
 import com.example.furni.repository.home.HomeRepositoryImpl
 import com.example.furni.repository.login.AuthRepository
 import com.example.furni.repository.login.AuthRepositoryImpl
+import com.example.furni.repository.product.ProductDetailRepository
+import com.example.furni.repository.product.ProductDetailRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import dagger.Module
@@ -29,4 +31,10 @@ class RepositoryModule {
 
     @Provides
     fun provideFirebaseDatabase(): FirebaseDatabase = FirebaseDatabase.getInstance()
+
+    @Provides
+    @ViewModelScoped
+    fun provideProductDetailRepository(
+        impl: ProductDetailRepositoryImpl
+    ): ProductDetailRepository = impl
 }

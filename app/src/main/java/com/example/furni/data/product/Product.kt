@@ -10,4 +10,6 @@ data class Product constructor(
     var image: String? = null,
     var sfa: String? = null,
     var sfb: String? = null,
-)
+    override val isLoading: Boolean = false,
+    override val error: String = ""
+) : NetworkObject()
