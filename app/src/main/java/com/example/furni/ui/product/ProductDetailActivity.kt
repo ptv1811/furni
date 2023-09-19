@@ -37,26 +37,58 @@ class ProductDetailActivity :
 
         binding {
             back.setOnClickListener(this@ProductDetailActivity)
+            addToCart.setOnClickListener(this@ProductDetailActivity)
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                productDetailViewModel.productDetail.collect { product ->
-                    if (product.isLoading) {
+                launch {
+                    productDetailViewModel.productDetail.collect { product ->
+                        if (product.isLoading) {
+                            // TODO Handle later
+                        } else if (product.error.isNotBlank()) {
+                            val toast =
+                                Toast.makeText(
+                                    this@ProductDetailActivity,
+                                    product.error,
+                                    Toast.LENGTH_SHORT
+                                )
+                            toast.show()
+                        } else {
+                            populateUiWithProduct(product)
+                        }
+                    }
+                }
 
-                    } else if (product.error.isNotBlank()) {
-                        val toast =
+                launch {
+                    productDetailViewModel.orderStatus.collect {
+                        if (it.isLoading) {
+                            // TODO Handle later
+                        } else if (it.error.isNotBlank()) {
+                            val toast =
+                                Toast.makeText(
+                                    this@ProductDetailActivity,
+                                    it.error,
+                                    Toast.LENGTH_SHORT
+                                )
+                            toast.show()
+                        } else {
                             Toast.makeText(
                                 this@ProductDetailActivity,
-                                product.error,
+                                "Added to cart",
                                 Toast.LENGTH_SHORT
-                            )
-                        toast.show()
-                    } else {
-                        populateUiWithProduct(product)
+                            ).show()
+                        }
                     }
                 }
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        intent.getStringExtra("ProductId")?.let {
+            productDetailViewModel.getProductDetail(it)
         }
     }
 
@@ -66,6 +98,12 @@ class ProductDetailActivity :
             priceProduct.text = "$  ${product.price}"
             nameProduct.text = product.name
             descriptionProduct.text = product.description
+            amount.setRange(1, product.quantity.toInt())
+        }
+
+        val arFragment = supportFragmentManager.findFragmentById(R.id.ar_fragment) as ArFragment
+        arFragment.setOnTapArPlaneListener { hitResult, _, _ ->
+            placeModel(arFragment, hitResult.createAnchor(), product.sfb)
         }
     }
 
@@ -74,7 +112,24 @@ class ProductDetailActivity :
             R.id.back -> {
                 finish()
             }
+
+            R.id.add_to_cart -> {
+                binding {
+                    intent.getStringExtra("ProductId")?.let {
+                        placeOrder(
+                            productID = it,
+                            product = productDetailViewModel.productDetail.value,
+                            amount = amount.number.toInt()
+                        )
+                    }
+                }
+            }
         }
+    }
+
+    private fun placeOrder(productID: String, product: Product, amount: Int) {
+        // TODO replace UserID
+        productDetailViewModel.addToCart("", productID, product, amount)
     }
 
     private fun placeModel(arFragment: ArFragment, anchor: Anchor, model_sfb: String) {
