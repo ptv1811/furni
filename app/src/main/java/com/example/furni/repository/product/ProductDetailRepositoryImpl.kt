@@ -1,6 +1,8 @@
 package com.example.furni.repository.product
 
+import com.example.furni.data.order.Order
 import com.example.furni.data.network.Resource
+import com.example.furni.data.order.OrderStatus
 import com.example.furni.data.product.Product
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -10,6 +12,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 /**
@@ -47,4 +50,27 @@ class ProductDetailRepositoryImpl @Inject constructor(
                 ref.removeEventListener(productDetailListener)
             }
         }
+
+    override suspend fun addToCart(
+        userID: String,
+        productID: String,
+        product: Product,
+        amount: Int
+    ): Flow<Resource<OrderStatus>> = callbackFlow {
+        trySend(Resource.Loading)
+
+        Order(productID, product.name, amount.toString()).also { order ->
+            mDatabase.reference
+                .child("Users/")
+                .child("${userID}/")
+                .child("orders/").child(System.currentTimeMillis().toString())
+                .setValue(order)
+                .addOnSuccessListener {
+                    trySendBlocking(Resource.Success(OrderStatus(status = "Successfully added to cart")))
+                }
+                .addOnFailureListener {
+                    trySendBlocking(Resource.Failure(it.localizedMessage))
+                }
+        }
+    }
 }
