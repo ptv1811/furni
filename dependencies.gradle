@@ -1,15 +1,15 @@
 ext.versions = [
         minSdk              : 24,
-        compileSdk          : 31,
+        compileSdk          : 33,
         versionCode         : 3,
         versionName         : '1.0.2',
 
 // gradle plugins
-        gradleBuildTool     : '7.4.2',
+        gradleBuildTool     : '8.1.1',
         spotlessGradle      : '6.1.0',
 
 // kotlin
-        kotlin              : '1.5.32',
+        kotlin              : '1.9.0',
 
 // ar-core
         arCoreVersion       : '1.29.0',
@@ -31,7 +31,7 @@ ext.versions = [
         startupVersion      : '1.1.0',
 
 // di
-        hiltCoreVersion     : '2.40.5',
+        hiltCoreVersion     : '2.46',
         hiltVersion         : '1.0.0',
 
 // network
@@ -68,7 +68,7 @@ ext.versions = [
         rainbowVersion      : '1.0.4',
 
 //fragment
-        fragment            : '2.7.2',
+        fragment            : '2.6.0',
 
 // firebase
         firebaseBom         : '32.2.3',
