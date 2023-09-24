@@ -71,6 +71,7 @@ ext.versions = [
         fragment            : '2.6.0',
 
 // firebase
+        gms                 : '4.4.0',
         firebaseBom         : '32.2.3',
         playService         : '20.7.0',
         firebaseStorage     : '20.2.1',
