@@ -8,6 +8,7 @@ import com.skydoves.bindables.BindingViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,11 +18,11 @@ class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : BindingViewModel() {
 
-    private val _user = MutableStateFlow<AuthState?>(AuthState(isLoading = true))
+    private val _user = MutableStateFlow<AuthState?>(AuthState(isLoading = false))
     val user: StateFlow<AuthState?> = _user
 
     fun login(email: String, password: String) = viewModelScope.launch {
-        authRepository.login(email, password).onEach {
+        authRepository.login(email, password).collect {
             when (it) {
                 is Resource.Loading -> {
                     _user.value = AuthState(isLoading = true)
@@ -39,7 +40,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun register(email: String, password: String) = viewModelScope.launch {
-        authRepository.register(email, password).onEach {
+        authRepository.register(email, password).collect {
             when (it) {
                 is Resource.Loading -> {
                     _user.value = AuthState(isLoading = true)

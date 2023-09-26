@@ -29,7 +29,7 @@ class SignUpActivity : BindingActivity<ActivitySignUpBinding>(R.layout.activity_
         super.onCreate(savedInstanceState)
         binding {
             moveSignin.setOnClickListener(this@SignUpActivity)
-            signUp.setOnClickListener(this@SignUpActivity)
+            buttonSignup.setOnClickListener(this@SignUpActivity)
         }
 
         lifecycleScope.launch {
