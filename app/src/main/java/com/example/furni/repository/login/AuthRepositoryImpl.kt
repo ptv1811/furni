@@ -4,8 +4,10 @@ import com.bumptech.glide.load.HttpException
 import com.example.furni.data.AuthState
 import com.example.furni.data.network.Resource
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
 import java.io.IOException
 import javax.inject.Inject
@@ -57,7 +59,7 @@ class AuthRepositoryImpl @Inject constructor(
             } catch (e: Exception) {
                 emit(Resource.Failure(message = e.localizedMessage ?: ""))
             }
-        }
+        }.flowOn(Dispatchers.IO)
 
     override suspend fun logout() {
         mAuth.signOut()
