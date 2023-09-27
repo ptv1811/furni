@@ -7,9 +7,14 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.furni.R
 import com.example.furni.databinding.ActivityHomeScreenBinding
@@ -28,21 +33,23 @@ class HomeScreenActivity :
     private val navController by lazy {
         Navigation.findNavController(this, R.id.navHostFragment)
     }
+    private var appBarConfiguration: AppBarConfiguration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding {
             setSupportActionBar(appBar.toolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-            navView.setupWithNavController(navController)
-//            navView.setNavigationItemSelectedListener(this@HomeScreenActivity)
-
-            NavigationUI.setupActionBarWithNavController(
-                this@HomeScreenActivity,
-                navController,
-                drawerLayout
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.shopFragment,
+                    R.id.storeFragment,
+                    R.id.aboutUsFragment,
+                    R.id.cartFragment
+                ), drawerLayout
             )
+
+            setupActionBarWithNavController(navController, appBarConfiguration!!)
+            navView.setupWithNavController(navController)
         }
     }
 
@@ -50,11 +57,11 @@ class HomeScreenActivity :
         return NavigationUI.navigateUp(navController, binding.drawerLayout)
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.main_app, menu)
-//        return true
-//    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.activity_main_app_drawer, menu)
+        return true
+    }
 
     override fun onBackPressed() {
         binding {
@@ -76,7 +83,7 @@ class HomeScreenActivity :
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START)
-        return true
+        return super.onOptionsItemSelected(item)
     }
 
     private fun signOut() {
