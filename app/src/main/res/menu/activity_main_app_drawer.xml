@@ -5,16 +5,16 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_shop"
+            android:id="@+id/shopFragment"
             android:title="SHOP" />
         <item
-            android:id="@+id/nav_about_us"
+            android:id="@+id/aboutUsFragment"
             android:title="ABOUT US" />
         <item
-            android:id="@+id/nav_store"
+            android:id="@+id/storeFragment"
             android:title="STORE" />
         <item
-            android:id="@+id/nav_cart"
+            android:id="@+id/cartFragment"
             android:title="CART"/>
         <item
             android:id="@+id/nav_sign_out"

@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
     app:startDestination="@id/shopFragment">
 
     <fragment
         android:id="@+id/shopFragment"
         android:name="com.example.furni.ui.fragments.ShopFragment"
-        android:label="ShopFragment" />
+        android:label="ShopFragment"
+        tools:layout="@layout/fragment_shop_all"/>
     <fragment
         android:id="@+id/storeFragment"
         android:name="com.example.furni.ui.fragments.StoreFragment"
-        android:label="StoreFragment" />
+        android:label="StoreFragment"
+        tools:layout="@layout/fragment_store"/>
     <fragment
         android:id="@+id/aboutUsFragment"
         android:name="com.example.furni.ui.fragments.AboutUsFragment"
-        android:label="AboutUsFragment" />
+        android:label="AboutUsFragment"
+        tools:layout="@layout/fragment_about_us"/>
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.example.furni.ui.fragments.CartFragment"
-        android:label="CartFragment" />
+        android:label="CartFragment"
+        tools:layout="@layout/fragment_cart"/>
 </navigation>
