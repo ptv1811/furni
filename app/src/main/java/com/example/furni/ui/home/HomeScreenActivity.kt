@@ -3,10 +3,10 @@ package com.example.furni.ui.home
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
@@ -15,7 +15,6 @@ import com.example.furni.R
 import com.example.furni.databinding.ActivityHomeScreenBinding
 import com.example.furni.ui.login.LoginActivity
 import com.example.furni.viewmodel.AuthViewModel
-import com.example.furni.viewmodel.HomeScreenViewModel
 import com.google.android.material.navigation.NavigationView.OnNavigationItemSelectedListener
 import com.skydoves.bindables.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +25,9 @@ class HomeScreenActivity :
     OnNavigationItemSelectedListener {
 
     private val authViewModel: AuthViewModel by viewModels()
+    private val navController by lazy {
+        Navigation.findNavController(this, R.id.navHostFragment)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +35,26 @@ class HomeScreenActivity :
             setSupportActionBar(appBar.toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-            navView.setupWithNavController(navHostFragment.findNavController())
-            navView.setNavigationItemSelectedListener(this@HomeScreenActivity)
+            navView.setupWithNavController(navController)
+//            navView.setNavigationItemSelectedListener(this@HomeScreenActivity)
 
             NavigationUI.setupActionBarWithNavController(
                 this@HomeScreenActivity,
-                navHostFragment.findNavController(),
+                navController,
                 drawerLayout
             )
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(navController, binding.drawerLayout)
     }
+
+//    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        menuInflater.inflate(R.menu.main_app, menu)
+//        return true
+//    }
 
     override fun onBackPressed() {
         binding {
