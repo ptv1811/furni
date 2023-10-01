@@ -42,7 +42,7 @@ class HomeScreenViewModel @Inject constructor(
     val userCartList: StateFlow<UserCartList> = _cartList
 
     fun getStoreInformation() = viewModelScope.launch {
-        homeRepository.fetchInformationByClass("Shop", Store::class.java).onEach {
+        homeRepository.fetchInformationByClass("Shop", Store::class.java).collect {
             when (it) {
                 is Resource.Loading -> {
                     _store.value = Store(isLoading = true)
