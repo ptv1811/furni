@@ -41,19 +41,22 @@ class StoreFragment : BindingFragment<FragmentStoreBinding>(R.layout.fragment_st
                     homeScreenViewModel.store.collect { store ->
                         if (store.isLoading) {
                             binding.pBar.visibility = VISIBLE
-                        } else
-
-                            if (store.error.isNotBlank()) {
-                                binding.pBar.visibility = View.GONE
-                                val toast =
-                                    Toast.makeText(activity, store.error, Toast.LENGTH_SHORT)
-                                toast.show()
-                            } else {
-                                updateStoreInformationUI(store)
-                            }
+                        } else if (store.error.isNotBlank()) {
+                            binding.pBar.visibility = View.GONE
+                            val toast =
+                                Toast.makeText(activity, store.error, Toast.LENGTH_SHORT)
+                            toast.show()
+                        } else {
+                            updateStoreInformationUI(store)
+                        }
                     }
                 }
             }
+        }
+
+        binding {
+            address.setOnClickListener(this@StoreFragment)
+            phone.setOnClickListener(this@StoreFragment)
         }
     }
 
