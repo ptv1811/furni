@@ -29,7 +29,7 @@ class HomeScreenViewModel @Inject constructor(
     private val homeRepository: HomeRepository
 ) : BindingViewModel() {
 
-    private val _store = MutableStateFlow(Store())
+    private val _store = MutableStateFlow(Store(isLoading = true))
     val store: StateFlow<Store> = _store
 
     private val _aboutUs = MutableStateFlow(AboutUs())
@@ -60,7 +60,7 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     fun getAboutUsInformation() = viewModelScope.launch {
-        homeRepository.fetchInformationByClass("AboutUs", AboutUs::class.java).onEach {
+        homeRepository.fetchInformationByClass("AboutUs", AboutUs::class.java).collect {
             when (it) {
                 is Resource.Loading -> {
                     _aboutUs.value = AboutUs(isLoading = true)
