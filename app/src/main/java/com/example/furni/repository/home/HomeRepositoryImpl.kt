@@ -28,6 +28,7 @@ class HomeRepositoryImpl @Inject constructor(
         typeClass: Class<T>
     ): Flow<Resource<T>> = callbackFlow {
         val ref = mDatabase.getReference(path)
+        trySendBlocking(Resource.Loading)
 
         val infoListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

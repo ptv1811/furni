@@ -40,7 +40,7 @@
                 android:gravity="center_horizontal"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="Established in 2019, Furni was designed to give you the best furniture with the best price"
+                android:text=""
                 android:textColor="#000"
                 android:textSize="19sp" />
 
@@ -54,7 +54,7 @@
                 android:paddingStart="16dp"
                 android:paddingTop="15dp"
                 android:paddingEnd="16dp"
-                android:text="In Furni, you are able to view the product in your own home before decide to buy with ARCore"
+                android:text=""
                 android:textColor="#000"
                 android:textSize="19sp" />
 
