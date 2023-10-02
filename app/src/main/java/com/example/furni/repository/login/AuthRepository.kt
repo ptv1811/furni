@@ -10,4 +10,6 @@ interface AuthRepository {
     suspend fun register(userName: String, password: String): Flow<Resource<AuthState>>
 
     suspend fun logout()
+
+    suspend fun  isUserLoggedIn(): Flow<Resource<AuthState>>
 }
