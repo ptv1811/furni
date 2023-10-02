@@ -56,6 +56,7 @@ dependencies {
     implementation "androidx.room:room-ktx:$versions.roomVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$versions.fragment"
     implementation "androidx.navigation:navigation-ui-ktx:$versions.fragment"
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     kapt "androidx.room:room-compiler:$versions.roomVersion"
     testImplementation "androidx.arch.core:core-testing:$versions.archCompomentVersion"
 

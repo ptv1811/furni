@@ -64,4 +64,18 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun logout() {
         mAuth.signOut()
     }
+
+    override suspend fun isUserLoggedIn(): Flow<Resource<AuthState>> = flow {
+        try {
+            mAuth.currentUser.also { user ->
+                if (user == null) {
+                    emit(Resource.Success(AuthState(user = null)))
+                } else {
+                    emit(Resource.Success(AuthState(user = user)))
+                }
+            }
+        } catch (e: Exception) {
+            emit(Resource.Failure(message = e.localizedMessage ?: ""))
+        }
+    }
 }
