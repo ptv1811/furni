@@ -40,6 +40,10 @@ class ProductDetailActivity :
             addToCart.setOnClickListener(this@ProductDetailActivity)
         }
 
+        intent.getStringExtra("ProductId")?.let {
+            productDetailViewModel.getProductDetail(it)
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -82,13 +86,6 @@ class ProductDetailActivity :
                     }
                 }
             }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        intent.getStringExtra("ProductId")?.let {
-            productDetailViewModel.getProductDetail(it)
         }
     }
 
@@ -171,7 +168,7 @@ class ProductDetailActivity :
     companion object {
         fun startActivity(view: View, productId: Int) {
             Intent(view.context, ProductDetailActivity::class.java).also {
-                it.putExtra("ProductId", productId)
+                it.putExtra("ProductId", productId.toString())
                 view.context.startActivity(it)
             }
         }

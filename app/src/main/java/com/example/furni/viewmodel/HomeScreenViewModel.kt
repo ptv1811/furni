@@ -78,7 +78,7 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     fun getProductList() = viewModelScope.launch {
-        homeRepository.fetchListInformationByClass("Product", Product::class.java).onEach {
+        homeRepository.fetchListInformationByClass("Product", Product::class.java).collect {
             when (it) {
                 is Resource.Loading -> {
                     _productList.value = Products(isLoading = true)

@@ -11,7 +11,7 @@ class ShopItemAdapter : BaseRecyclerViewAdapter<Product, CustomLayoutRecyclerBin
     R.layout.custom_layout_recycler,
     clickListener = { pos, binding ->
         pos.takeIf { it != NO_POSITION }?.let {
-            ProductDetailActivity.startActivity(binding.root, it)
+            ProductDetailActivity.startActivity(binding.root, it + 1)
         }
     },
 
