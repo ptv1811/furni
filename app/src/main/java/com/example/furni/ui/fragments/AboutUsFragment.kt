@@ -34,7 +34,7 @@ class AboutUsFragment : BindingFragment<FragmentAboutUsBinding>(R.layout.fragmen
         viewLifecycleOwner.let {
             it.lifecycleScope.launch {
                 it.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    homeScreenViewModel.aboutUs.collectLatest { aboutUs ->
+                    homeScreenViewModel.aboutUs.collect { aboutUs ->
                         if (aboutUs.isLoading) {
                             binding.pBar.visibility = View.VISIBLE
                         } else if (aboutUs.error.isNotBlank()) {
